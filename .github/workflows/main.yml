@@ -118,3 +118,17 @@ jobs:
       with:
         name: helm-package
         path: ./*.tgz
+
+  deploy-development:
+    name: Deploy to Development
+    needs: [docker-ci, helm-ci]
+    uses: ./.github/workflows/deploy.yml
+    with:
+      environment: development
+
+  deploy-production:
+    name: Deploy to Production
+    needs: [docker-ci, helm-ci, deploy-development]
+    uses: ./.github/workflows/deploy.yml
+    with:
+      environment: production
